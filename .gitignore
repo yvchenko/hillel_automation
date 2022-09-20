@@ -1,4 +1,5 @@
 venv
 tests/.pytest_cache
+ui/.pytest_cache
 selenium_dockerless
 api/response.json
