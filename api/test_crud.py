@@ -115,3 +115,20 @@ def test_delete_user(users, auth):
     response = requests.request("DELETE", user_url, auth=auth)
     assert response.status_code == 204, f"Test response : {response.text}"
     assert not response.text
+
+
+@pytest.mark.api
+def test_find_deleted_user(users, auth):
+    """
+    Sends a GET request to the url of the user that was created in the first test
+    Checks that the response code is 404 and the response is "Not found"
+    """
+    user_url = pytest.shared
+
+    response = requests.request("GET", user_url, auth=auth)
+    json_data = json.loads(response.text)
+
+    assert response.status_code == 404, f"Test response : {response.text}"
+    assert_schema(json_data, "not_found.json")
+
+    assert json_data["detail"] == "Not found."
