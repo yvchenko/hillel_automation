@@ -3,4 +3,4 @@ tests/.pytest_cache
 ui/.pytest_cache
 selenium_dockerless
 tests/response.json
-examples
+examples/.pytest_cache

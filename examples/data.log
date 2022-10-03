@@ -1,0 +1,10 @@
+2022-09-22 19:56:00,381 - DEBUG - Debug
+2022-09-22 19:56:00,381 - INFO - Info
+2022-09-22 19:56:00,381 - WARNING - Warning
+2022-09-22 19:56:00,381 - ERROR - Error
+2022-09-22 19:56:00,381 - CRITICAL - Critical
+2022-09-22 20:13:29,134 - ERROR - file with the name example.txt does not exist.
+2022-09-22 20:13:29,135 - WARNING - file example.txt was created.
+2022-09-22 20:13:52,153 - INFO - file example.txt successfully opened
+2022-09-22 20:15:38,065 - INFO - file example.txt successfully opened
+2022-09-22 20:15:38,066 - DEBUG - data was not retrieved from example.txt
