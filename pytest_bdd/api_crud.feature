@@ -37,14 +37,16 @@ Feature: CRUD
   Scenario: Changing the user's group
       Given I am the admin
       And I have created a user
-      And I create a new group
 
-      When User has name 'yvchenko' and email 'new_email@test.com'
+      When I create a new group
+      And User has name 'yvchenko' and email 'new_email@test.com'
+      And I add the group to the payload
       And I send a PUT request
 
       Then I should get the '200' code
       And The 'user' schema is correct
-      And The credentials match the payload
+      And The group was added
+      Then I delete the group
 
   Scenario: Deleting the user
       Given I am the admin

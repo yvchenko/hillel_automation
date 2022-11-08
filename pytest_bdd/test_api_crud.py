@@ -18,8 +18,6 @@ def auth(request):
 def users(request):
     request.users = "https://www.aqa.science/users/"
 
-@given("I create a new ")
-
 
 @when(parsers.re("User has name '(?P<username>.*)' and email '(?P<email>.*)'"))
 def payload(request, username, email):
@@ -85,6 +83,28 @@ def post(request):
                                         headers=headers)
 
 
+@when("I create a new group")
+def group_add(request):
+    groups = "https://www.aqa.science/groups/"
+    headers = {'Content-Type': 'application/json'}
+    payload = json.dumps({
+        "name": "test_group"
+    })
+
+    response = requests.request("POST", groups, auth=request.credentials, headers=headers, data=payload)
+
+    json_data = json.loads(response.text)
+    request.group_url = json_data["url"]
+
+
+@when("I add the group to the payload")
+def group_put(request):
+    request.payload = json.dumps({
+        "username": f"{request.username}",
+        "groups": [request.group_url]
+    })
+
+
 @then(parsers.re("The credentials match the payload"))
 def cred_check(request):
     response = request.response
@@ -92,3 +112,17 @@ def cred_check(request):
 
     assert json_data["username"] == request.username
     assert json_data["email"] == request.email
+
+
+@then("The group was added")
+def group_check(request):
+    response = request.response
+    json_data = json.loads(response.text)
+
+    assert json_data["username"] == request.username
+    assert json_data["groups"] == [request.group_url]
+
+@then("I delete the group")
+def delete_group(request):
+    requests.request("DELETE", request.group_url, auth=request.credentials)
+
