@@ -1,12 +1,12 @@
 import json
-
-from pytest_bdd import scenarios, given, when, then, parsers
-from resources.auth import get_credentials
-from schema_validator import assert_schema
 import pytest
 import requests
 
-scenarios('../pytest_bdd/api_crud.feature')
+from pytest_bdd import scenarios, given, when, then, parsers
+from resources.auth import get_credentials
+from resources.schema_validator import assert_schema
+
+scenarios('../bdd_tests/features/api_crud.feature')
 
 
 @given("I am the admin")
@@ -55,10 +55,11 @@ def validate_schema(request, schema):
 @then("I receive the user's URL")
 def get_user(request):
     response = request.response
-    json_data = json.loads(response.text)
+    if response.status_code == 201:
+        json_data = json.loads(response.text)
 
-    request.user = json_data["url"]
-    pytest.shared = request.user
+        request.user = json_data["url"]
+        pytest.shared = request.user
 
 
 @given("I have created a user")
@@ -105,7 +106,7 @@ def group_put(request):
     })
 
 
-@then(parsers.re("The credentials match the payload"))
+@then("The credentials match the payload")
 def cred_check(request):
     response = request.response
     json_data = json.loads(response.text)
@@ -122,7 +123,15 @@ def group_check(request):
     assert json_data["username"] == request.username
     assert json_data["groups"] == [request.group_url]
 
+
 @then("I delete the group")
 def delete_group(request):
     requests.request("DELETE", request.group_url, auth=request.credentials)
 
+
+@then("The message says Not found")
+def not_found(request):
+    response = request.response
+    json_data = json.loads(response.text)
+
+    assert json_data["detail"] == "Not found."

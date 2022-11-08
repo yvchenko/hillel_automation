@@ -15,7 +15,7 @@ def _load_json_schema(filename):
     """
     Loads the schema file
     """
-    relative_path = join('resources', 'schema', filename)
+    relative_path = join('', 'schema', filename)
     absolute_path = join(dirname(__file__), relative_path)
 
     with open(absolute_path) as schema_file:
