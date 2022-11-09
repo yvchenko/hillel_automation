@@ -1,3 +1,4 @@
+@bdd @api
 Feature: Арі
   Allows to manage users and groups
 
