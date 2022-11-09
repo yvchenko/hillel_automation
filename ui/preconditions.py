@@ -7,7 +7,7 @@ from data.page_objects import LoginPage, AdminPage, LogoutPage
 
 
 def get_credentials():
-    with open('resources/data.json', "r") as f:
+    with open('ui/resources/data.json', "r") as f:
         secret_variables = json.load(f)
     return secret_variables
 
