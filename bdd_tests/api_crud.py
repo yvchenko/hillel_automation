@@ -3,7 +3,7 @@ import pytest
 import requests
 
 from pytest_bdd import scenarios, given, when, then, parsers
-from resources.auth import get_credentials
+from resources.auth import get_credentials_tuple
 from resources.schema_validator import assert_schema
 
 scenarios('../bdd_tests/features/api_crud.feature')
@@ -11,7 +11,7 @@ scenarios('../bdd_tests/features/api_crud.feature')
 
 @given("I am the admin")
 def auth(request):
-    request.credentials = get_credentials("data.json")
+    request.credentials = get_credentials_tuple("data.json")
 
 
 @given("I have the endpoint")
