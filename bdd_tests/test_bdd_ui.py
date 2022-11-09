@@ -43,7 +43,7 @@ def users():
     time.sleep(3)
 
 
-@when(parsers.re("I enter '(?P<username>.*)' into the search bar"))
+@given(parsers.re("I enter '(?P<username>.*)' into the search bar"))
 def enter_user(username):
     search_bar = driver.find_element(By.XPATH, AdminPage.search_bar_id)
 
@@ -51,7 +51,7 @@ def enter_user(username):
     time.sleep(1)
 
 
-@when("I press the Search button")
+@given("I press the Search button")
 def search():
     search_button = driver.find_element(By.XPATH, AdminPage.search_button_id)
 
@@ -59,11 +59,11 @@ def search():
     time.sleep(1)
 
 
-@when("I press the Create button")
-def create():
-    create_button = driver.find_element(By.XPATH, AdminPage.create_button_id)
+@given("I click on the result entry")
+def click_user():
+    result_entry = driver.find_element(By.XPATH, AdminPage.result_entry_id)
 
-    create_button.click()
+    result_entry.click()
     time.sleep(1)
 
 
@@ -91,19 +91,35 @@ def confirm_password(password):
     time.sleep(1)
 
 
+@when(parsers.re("I fill in the Name field with '(?P<name>.*)'"))
+def name(name):
+    first_name_field = driver.find_element(By.XPATH, UserPage.first_name_field_id)
+
+    first_name_field.send_keys(name)
+    time.sleep(1)
+
+
+@when(parsers.re("I fill in the Last name field with '(?P<lastname>.*)'"))
+def lastname(lastname):
+    last_name_field = driver.find_element(By.XPATH, UserPage.last_name_field_id)
+
+    last_name_field.send_keys(lastname)
+    time.sleep(1)
+
+
+@when(parsers.re("I fill in the Email field with '(?P<email>.*)'"))
+def email(email):
+    email_field = driver.find_element(By.XPATH, UserPage.email_field_id)
+
+    email_field.send_keys(email)
+    time.sleep(1)
+
+
 @when("I press the Save button")
 def save():
     save_button = driver.find_element(By.XPATH, CreatePage.save_button_id)
 
     save_button.click()
-    time.sleep(1)
-
-
-@when("I click on the result entry")
-def click_user():
-    result_entry = driver.find_element(By.XPATH, AdminPage.result_entry_id)
-
-    result_entry.click()
     time.sleep(1)
 
 
@@ -121,6 +137,21 @@ def submit():
 
     submit_button.click()
     time.sleep(1)
+
+
+@when("I press the Create button")
+def create():
+    create_button = driver.find_element(By.XPATH, AdminPage.create_button_id)
+
+    create_button.click()
+    time.sleep(1)
+
+
+@when("I press the Continue button")
+def save_cont():
+    save_continue_button = driver.find_element(By.XPATH, UserPage.save_continue_button_id)
+
+    save_continue_button.click()
 
 
 @when("I click on Superuser filter")
@@ -149,10 +180,37 @@ def new_user(username):
     assert result_entry.text != username
 
 
+@then(parsers.re("I receive a notification that user '(?P<username>.*)' is changed"))
+def user_changed(username):
+    success_notification = driver.find_element(By.XPATH, UserPage.success_notification_id)
+    assert success_notification.text == f"The user “{username}” was changed successfully. You may edit it again below."
+
+
 @then(parsers.re("I receive a notification that user '(?P<username>.*)' is deleted"))
 def user_deleted(username):
     success_notification = driver.find_element(By.XPATH, AdminPage.success_notification_id)
     assert success_notification.text == f"The user “{username}” was deleted successfully."
+
+
+@then(parsers.re("The Name is '(?P<name>.*)'"))
+def name_check(name):
+    first_name_text = driver.find_element(By.XPATH, UserPage.first_name_field_id)
+
+    assert first_name_text.get_attribute('value') == name
+
+
+@then(parsers.re("The Last name is '(?P<lastname>.*)'"))
+def lastname_check(lastname):
+    last_name_text = driver.find_element(By.XPATH, UserPage.last_name_field_id)
+
+    assert last_name_text.get_attribute('value') == lastname
+
+
+@then(parsers.re("The Email is '(?P<email>.*)'"))
+def email_check(email):
+    email_text = driver.find_element(By.XPATH, UserPage.email_field_id)
+
+    assert email_text.get_attribute('value') == email
 
 
 @then(parsers.re("I can't find '(?P<username>.*)' in the list of users"))
