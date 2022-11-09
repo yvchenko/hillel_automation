@@ -10,8 +10,8 @@ Feature: UI
   Scenario: Creating a new user
     When I press the Create button
     And I fill in the username field with 'yvchenko'
-    And I fill in the password field with '4b82iKJ2'
-    And I fill in the confirm password field with '4b82iKJ2'
+    And I fill in the password field
+    And I fill in the confirm password field
     And I press the Save button
 
 
@@ -67,7 +67,6 @@ Feature: UI
     And The Email is 'nat@example.com'
 
     And I log out of the site
-
 
   Scenario: Deleting a user
     Given I opened the Users page

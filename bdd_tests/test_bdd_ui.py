@@ -3,6 +3,7 @@ import time
 from pytest_bdd import scenarios, given, when, then, parsers
 from resources.auth import get_credentials_dict
 from resources.selen import driver
+from resources.password import generate_password
 from resources.page_objects import LoginPage, AdminPage, LogoutPage, CreatePage, UserPage, DeletePage
 from selenium.webdriver.common.by import By
 
@@ -75,19 +76,21 @@ def username(username):
     time.sleep(1)
 
 
-@when(parsers.re("I fill in the password field with '(?P<password>.*)'"))
-def password(password):
+@when("I fill in the password field")
+def password(request):
+    request.password = generate_password(8)
+
     password_field = driver.find_element(By.XPATH, CreatePage.password_field_id)
 
-    password_field.send_keys(password)
+    password_field.send_keys(request.password)
     time.sleep(1)
 
 
-@when(parsers.re("I fill in the confirm password field with '(?P<password>.*)'"))
-def confirm_password(password):
+@when("I fill in the confirm password field")
+def confirm_password(request):
     confirm_password_field = driver.find_element(By.XPATH, CreatePage.confirm_password_field_id)
 
-    confirm_password_field.send_keys(password)
+    confirm_password_field.send_keys(request.password)
     time.sleep(1)
 
 
