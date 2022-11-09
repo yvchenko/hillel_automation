@@ -12,6 +12,6 @@ options.add_argument('--ignore-ssl-errors=yes')
 options.add_argument('--ignore-certificate-errors')
 
 driver = webdriver.Remote(
-    command_executor='http://127.0.0.1:4090/wd/hub',
+    command_executor='http://localhost:4090/wd/hub',
     options=options
 )
