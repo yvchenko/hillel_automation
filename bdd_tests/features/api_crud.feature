@@ -1,5 +1,5 @@
-Feature: CRUD
-  Basic scenarios of creating, reading, updating and deleting a new user
+Feature: Арі
+  Allows to manage users and groups
 
   Scenario Outline: Creating a user
     Given I am the admin
