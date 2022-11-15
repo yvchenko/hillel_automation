@@ -3,7 +3,7 @@ import pytest
 
 from selen import driver
 from selenium.webdriver.common.by import By
-from data.page_objects import AdminPage, CreatePage, UserPage
+from data.page_objects import AdminPage, CreatePage, UserPage, DeletePage
 
 username = 'yvchenko'
 password = '4b82iKJ2'
