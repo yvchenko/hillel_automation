@@ -1,5 +1,5 @@
 allure-pytest==2.11.1
-allure-pytest-bdd==2.11.1
+# allure-pytest-bdd==2.11.1
 jsonschema==4.16.0
 pytest==7.1.2
 pytest-bdd==6.0.1
