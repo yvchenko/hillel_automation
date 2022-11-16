@@ -1,5 +1,5 @@
 """
-docker run -d --name selenium_chrome -p 4095:4444 -p 5900:5900 selenium/standalone-chrome-debug:3.141
+docker run -d --name selenium_chrome -p 4090:4444 -p 5900:5900 selenium/standalone-chrome-debug:3.141
 docker rm selenium_chrome
 docker stop selenium_chrome
 docker rm --force selenium_chrome
@@ -12,6 +12,6 @@ options.add_argument('--ignore-ssl-errors=yes')
 options.add_argument('--ignore-certificate-errors')
 
 driver = webdriver.Remote(
-    command_executor='http://localhost:4095/wd/hub',
+    command_executor='http://localhost:4090/wd/hub',
     options=options
 )
