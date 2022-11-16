@@ -5,7 +5,6 @@ from resources.auth import get_credentials_dict
 from resources.selen import driver
 from resources.password import generate_password
 from resources.page_objects import LoginPage, AdminPage, LogoutPage, CreatePage, UserPage, DeletePage
-from resources.screenshots import take_screenshot
 from selenium.webdriver.common.by import By
 
 scenarios('../bdd_tests/features/ui_crud.feature')
@@ -169,42 +168,37 @@ def superuser_filter():
 @then(parsers.re("The result entry is the '(?P<username>.*)' name"))
 def username_found(username):
     result_entry = driver.find_element(By.XPATH, AdminPage.result_entry_id)
-    take_screenshot()
     assert result_entry.text == username
 
 
 @then(parsers.re("A user '(?P<username>.*)' is created"))
 def new_user(username):
     username_header = driver.find_element(By.XPATH, UserPage.username_header_id)
-    take_screenshot()
     assert username_header.text == username
 
 
 @then(parsers.re("The result entries do not contain '(?P<username>.*)'"))
 def new_user(username):
     result_entry = driver.find_element(By.XPATH, AdminPage.result_entry_id)
-    take_screenshot()
     assert result_entry.text != username
 
 
 @then(parsers.re("I receive a notification that user '(?P<username>.*)' is changed"))
 def user_changed(username):
     success_notification = driver.find_element(By.XPATH, UserPage.success_notification_id)
-    take_screenshot()
     assert success_notification.text == f"The user “{username}” was changed successfully. You may edit it again below."
 
 
 @then(parsers.re("I receive a notification that user '(?P<username>.*)' is deleted"))
 def user_deleted(username):
     success_notification = driver.find_element(By.XPATH, AdminPage.success_notification_id)
-    take_screenshot()
     assert success_notification.text == f"The user “{username}” was deleted successfully."
 
 
 @then(parsers.re("The Name is '(?P<name>.*)'"))
 def name_check(name):
     first_name_text = driver.find_element(By.XPATH, UserPage.first_name_field_id)
-    take_screenshot()
+
     assert first_name_text.get_attribute('value') == name
 
 
@@ -218,7 +212,7 @@ def lastname_check(lastname):
 @then(parsers.re("The Email is '(?P<email>.*)'"))
 def email_check(email):
     email_text = driver.find_element(By.XPATH, UserPage.email_field_id)
-    take_screenshot()
+
     assert email_text.get_attribute('value') == email
 
 
@@ -234,7 +228,6 @@ def user_not_found(username):
     time.sleep(1)
 
     search_results = driver.find_element(By.XPATH, AdminPage.search_results_id)
-    take_screenshot()
     assert '0 results' in search_results.text
 
 
@@ -246,7 +239,6 @@ def log_out():
     time.sleep(1)
 
     logout_header = driver.find_element(By.XPATH, LogoutPage.page_header_id)
-    take_screenshot()
     assert logout_header.text == "Logged out"
 
 
