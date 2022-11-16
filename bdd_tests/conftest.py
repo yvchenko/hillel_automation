@@ -1,11 +1,12 @@
 import os
-import allure
+import time
 import pytest
 
 from allure_commons.lifecycle import AllureLifecycle
 from allure_commons.model2 import TestResult
 from allure_commons import plugin_manager
-
+from allure import attach, attachment_type
+from resources.selen import driver
 
 
 def custom_write_test_case(self, uuid=None):
@@ -26,7 +27,17 @@ AllureLifecycle.write_test_case = custom_write_test_case
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_runtest_makereport(item, call):
+def take_screenshot(item, call):
+    """
+    Takes a screenshot
+    """
+    # time.sleep(1)
+    # attach(
+    #     driver.get_screenshot_as_png(),
+    #     name='screenshot',
+    #     attachment_type=attachment_type.PNG
+    # )
+# def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
     if rep.when == 'call' and rep.failed:
@@ -38,10 +49,10 @@ def pytest_runtest_makereport(item, call):
                 else:
                     print('Fail to take screen-shot')
                     return
-            allure.attach(
+            attach(
                 web_driver.get_screenshot_as_png(),
                 name='screenshot',
-                attachment_type=allure.attachment_type.PNG
+                attachment_type=attachment_type.PNG
             )
         except Exception as e:
             print('Fail to take screen-shot: {}'.format(e))

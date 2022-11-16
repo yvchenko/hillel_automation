@@ -1,3 +1,6 @@
+import os
+
+import allure
 import pytest
 from preconditions import get_credentials, open_site, log_in, login_assert, log_out, logout_assert, teardown
 
