@@ -1,6 +1,12 @@
+import os
+import allure
+import pytest
+
 from allure_commons.lifecycle import AllureLifecycle
 from allure_commons.model2 import TestResult
 from allure_commons import plugin_manager
+
+
 
 def custom_write_test_case(self, uuid=None):
     test_result = self._pop_item(uuid=uuid, item_type=TestResult)
@@ -15,4 +21,27 @@ def custom_write_test_case(self, uuid=None):
 
         plugin_manager.hook.report_result(result=test_result)
 
+
 AllureLifecycle.write_test_case = custom_write_test_case
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    rep = outcome.get_result()
+    if rep.when == 'call' and rep.failed:
+        mode = 'a' if os.path.exists('failures') else 'w'
+        try:
+            with open('failures', mode) as f:
+                if 'browser' in item.fixturenames:
+                    web_driver = item.funcargs['browser']
+                else:
+                    print('Fail to take screen-shot')
+                    return
+            allure.attach(
+                web_driver.get_screenshot_as_png(),
+                name='screenshot',
+                attachment_type=allure.attachment_type.PNG
+            )
+        except Exception as e:
+            print('Fail to take screen-shot: {}'.format(e))
